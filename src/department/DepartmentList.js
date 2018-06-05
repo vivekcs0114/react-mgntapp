@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Department from './Department';
 import EmployeeList from '../employee/EmployeeList';
+import { Container, Row, Col, Table } from 'reactstrap';
 
 class DepartmentList extends Component {
     constructor(props) {
@@ -86,33 +87,35 @@ class DepartmentList extends Component {
     }
     render() {
         return (
-            <div className="row container-fluid">
-            <div className="col-sm-4">
-            <div className="navbar-brand">
-              Department List
-            </div>
-            <table className="table table-bordered">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-              this.state.departments.map(department => 
-              <Department 
-              key={department.id}
-              department={department} 
-              getDepartmentEmployee={(department) => this.getDepartmentEmployee(department)}/>)
-            }
-            </tbody>
-            </table>
-            </div>
-            <div className="col-sm-8">
-              { this.isEmpty(this.state.employees) ? '' : <EmployeeList departmentName={this.state.departmentName} employees={this.state.employees} /> }
-            </div>
-            </div>
+          <Container>
+            <Row>
+              <Col sm="4">
+                <span className="navbar-brand">
+                  Department List
+                </span>
+                <Table bordered>
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                  this.state.departments.map(department => 
+                  <Department 
+                  key={department.id}
+                  department={department} 
+                  getDepartmentEmployee={(department) => this.getDepartmentEmployee(department)}/>)
+                }
+                </tbody>
+                </Table>
+              </Col>
+              <Col sm="8">
+                { this.isEmpty(this.state.employees) ? '' : <EmployeeList departmentName={this.state.departmentName} employees={this.state.employees} /> }
+              </Col>
+            </Row>
+          </Container>
         )
     }
     isEmpty(obj) { 

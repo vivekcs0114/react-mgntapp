@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 class EmployeeProfile extends Component {
     constructor(props){
@@ -12,28 +13,31 @@ class EmployeeProfile extends Component {
     }
     render() {
         return(
-            <div>
+            <Form>
                 <div className="navbar-brand">
                     Welcome, {this.props.employee.name}
                 </div>
-                <div className="form-group">
-                <label htmlFor="id">Id:</label>
+                <FormGroup>
+                <Label for="id">Id:</Label>
                 <p className="form-control">{this.props.employee.id}</p>
-                </div>
-                <div className="form-group">
-                <label htmlFor="name">Name:</label>
-                <input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
-                </div>
-                <div className="form-group">
-                <label htmlFor="address">Address:</label>
-                <input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.state.address} className="form-control" />
-                </div>
-                <div className="checkbox">
-                <label><input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.state.active} /> Active </label>
-                </div>
-                <input type="button" onClick={(employee) => this.props.updateEmployee(this.getEmployee())} value="Submit" className="btn btn-info marginTwo" />
-                <input type="button" className="btn btn-default marginTwo" onClick={()=>this.cancelEvent()} value="Cancel" />
-            </div>
+                </FormGroup>
+                <FormGroup>
+                <Label for="name">Name:</Label>
+                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
+                </FormGroup>
+                <FormGroup>
+                <Label for="address">Address:</Label>
+                <Input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.state.address} className="form-control" />
+                </FormGroup>
+                <FormGroup check>
+                <Label check>
+                    <Input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.state.active} />{' '}
+                    Active
+                </Label>
+                </FormGroup>
+                <Button onClick={(employee) => this.props.updateEmployee(this.getEmployee())} color="info" className="marginTwo">Submit</Button>
+                <Button onClick={()=>this.cancelEvent()} color="info" className="marginTwo">Cancel</Button>
+            </Form>
         )
     }
     cancelEvent() {

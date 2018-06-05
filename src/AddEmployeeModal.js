@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
 import Modal from 'react-modal';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const customStyles = {
     content : {
@@ -32,7 +33,7 @@ class AddEmployeeModal extends Component {
     }
     
     handleCloseModal () {
-      this.setState({ showModal: false });
+      this.setState({ showModal: !this.state.showModal });
     }
     
     componentWillMount() {
@@ -42,33 +43,36 @@ class AddEmployeeModal extends Component {
     render () {
       return (
         <div>
-          <button className="btn btn-info" onClick={this.handleOpenModal}>Add Employee</button>
+          <Button color="info" onClick={this.handleOpenModal}>Add Employee</Button>
           <ReactModal 
             isOpen={this.state.showModal}
             style={customStyles}>
-            <button className="close" aria-label="Close" onClick={this.handleCloseModal}>
+            <Button className="close" aria-label="Close" onClick={this.handleCloseModal}>
             <div aria-hidden="true">&times;</div>
-            </button>
-            <div>
-                <div className="form-group">
-                <label htmlFor="id">Id:</label>
-                <input type="number" onChange={(event)=>this.handleIdChange(event)}  value={this.state.id} className="form-control" />
-                </div>
-                <div className="form-group">
-                <label htmlFor="name">Name:</label>
-                <input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
-                </div>
-                <div className="form-group">
-                <label htmlFor="address">Address:</label>
-                <input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.state.address} className="form-control" />
-                </div>
-                <div className="checkbox">
-                <label><input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.state.active} /> Active </label>
-                </div>
+            </Button>
+            <Form>
+                <FormGroup>
+                <Label for="id">Id:</Label>
+                <Input type="number" onChange={(event)=>this.handleIdChange(event)}  value={this.state.id} className="form-control" />
+                </FormGroup>
+                <FormGroup>
+                <Label for="name">Name:</Label>
+                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
+                </FormGroup>
+                <FormGroup>
+                <Label for="address">Address:</Label>
+                <Input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.state.address} className="form-control" />
+                </FormGroup>
+                <FormGroup check>
+                <Label check>
+                    <Input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.state.active} />{' '}
+                    Active
+                </Label>
+                </FormGroup>
                 <div className=" text-center">
-                <input type="button" onClick={(employee) => this.props.addEmployee(this.getInputData())} value="Submit" className="btn btn-info" />
+                <Button onClick={(employee) => this.props.addEmployee(this.getInputData())} color="info">Submit</Button>
                 </div>
-            </div>
+            </Form>
           </ReactModal>
         </div>
       );

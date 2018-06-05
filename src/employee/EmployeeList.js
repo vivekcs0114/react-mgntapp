@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Employee from './Employee';
 import EmployeeProfile from './EmployeeProfile';
 import AddEmployeeModal from '../AddEmployeeModal';
+import { Row, Col, Table } from 'reactstrap';
 
 class EmployeeList extends Component {
     constructor(props) {
@@ -16,8 +17,8 @@ class EmployeeList extends Component {
         const total = this.getTotalEmployeeCount();
         const active = this.getActiveEmployeeCount();
         return (
-            <div className="row">
-                <div className="col-sm-6">
+            <Row>
+                <Col sm="6">
                     <div className="navbar-brand">
                         Employee List of {this.props.departmentName}
                     </div>
@@ -28,7 +29,7 @@ class EmployeeList extends Component {
                     <div>
                         <input className="marginTwo" placeholder="filter employee....." onChange={(event) => this.filterEmployee(event)}/>
                     </div>
-                    <table className="table table-bordered">
+                    <Table bordered>
                     <thead>
                     <tr>
                         <th>Id</th>
@@ -44,15 +45,15 @@ class EmployeeList extends Component {
                         getEmployee={(employee) => this.getEmployee(employee)}/>)
                     }
                     </tbody>
-                    </table>
+                    </Table>
                     <AddEmployeeModal addEmployee={(employee) => this.addEmployee(employee)}/>
-                </div>
-                <div className="col-sm-6">
+                </Col>
+                <Col sm="6">
                     { this.isEmpty(this.state.employee) ? '' : <EmployeeProfile 
                     employee={this.state.employee} 
                     updateEmployee={(employee) => this.updateEmployee(employee)}/> }
-                </div>
-            </div>
+                </Col>
+            </Row>
         )
     }
     getTotalEmployeeCount() {

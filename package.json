@@ -8,7 +8,8 @@
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.0",
     "react-scripts": "1.1.4",
-    "react-stripe-elements": "^2.0.0"
+    "react-stripe-elements": "^2.0.0",
+    "reactstrap": "^6.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
