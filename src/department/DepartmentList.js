@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Department from './Department';
 import EmployeeList from '../employee/EmployeeList';
+import AddDepartmentModal from '../AddDepartmentModal'
 import { Container, Row, Col, Table } from 'reactstrap';
 
 class DepartmentList extends Component {
@@ -110,6 +111,7 @@ class DepartmentList extends Component {
                 }
                 </tbody>
                 </Table>
+                <AddDepartmentModal addDepartment={(department) => this.addDepartment(department)}/>
               </Col>
               <Col sm="8">
                 { this.isEmpty(this.state.employees) ? '' : <EmployeeList departmentName={this.state.departmentName} employees={this.state.employees} /> }
@@ -129,6 +131,16 @@ class DepartmentList extends Component {
         employees: department.employees,
         departmentName:department.name
       });
+    }
+    addDepartment(department){
+      if(department.id === '' || department.name === '') {
+        return;
+      }
+      let departmentsList = this.state.departments;
+      departmentsList.push(department);
+      this.setState({
+          departments: departmentsList
+      })
     }
 }
 
