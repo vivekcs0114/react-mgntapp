@@ -3,87 +3,15 @@ import Department from './Department';
 import EmployeeList from '../employee/EmployeeList';
 import AddDepartmentModal from '../AddDepartmentModal'
 import { Container, Row, Col, Table } from 'reactstrap';
+import axios from 'axios';
 
 class DepartmentList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            departments: [
-                {
-                  name: "Computer Science",
-                  id: 101,
-                  employees: [
-                    {
-                      name: "Peter",
-                      id: 111,
-                      address: "Baner, pune",
-                      active: true
-                    },
-                    {
-                      name: "Jerry",
-                      id: 112,
-                      address: "Pashan, pune",
-                      active: false          
-                    },
-                    {
-                      name: "Mike",
-                      id: 113,
-                      address: "Hinjewadi, pune" ,
-                      active: true       
-                    }
-                ]
-                },
-                {
-                  name: "Electronics",
-                  id: 102,
-                  employees: [
-                    {
-                      name: "Sodi",
-                      id: 114,
-                      address: "Panjab",
-                      active: true
-                    },
-                    {
-                      name: "Seva",
-                      id: 115,
-                      address: "Mumbai" ,
-                      active: true         
-                    },
-                    {
-                      name: "Kane",
-                      id: 116,
-                      address: "Japan",
-                      active: true        
-                    }
-                ]          
-                },
-                {
-                  name: "Information Technology",
-                  id: 103,
-                  employees: [
-                    {
-                      name: "John",
-                      id: 117,
-                      address: "Kothrud, pune",
-                      active: false
-                    },
-                    {
-                      name: "Jerry",
-                      id: 118,
-                      address: "Pashan, pune",
-                      active: true          
-                    },
-                    {
-                      name: "Mike",
-                      id: 119,
-                      address: "Hinjewadi, pune",
-                      active: false        
-                    }
-                ]        
-                }
-            ],
+            departments:[],
             employees:[],
-            departmentName:''
+            department:{}
         }
     }
     render() {
@@ -114,7 +42,7 @@ class DepartmentList extends Component {
                 <AddDepartmentModal addDepartment={(department) => this.addDepartment(department)}/>
               </Col>
               <Col sm="8">
-                { this.isEmpty(this.state.employees) ? '' : <EmployeeList departmentName={this.state.departmentName} employees={this.state.employees} /> }
+                { this.isEmpty(this.state.employees) ? '' : <EmployeeList department={this.state.department} employees={this.state.employees} /> }
               </Col>
             </Row>
           </Container>
@@ -127,20 +55,44 @@ class DepartmentList extends Component {
       return true; 
     }
     getDepartmentEmployee(department) {
-      this.setState({
-        employees: department.employees,
-        departmentName:department.name
+      axios.get('http://localhost:8080/employees/departments/'+department.id)
+      .then(res => {
+        this.setState({ 
+          employees: res.data,
+          department:department
+        });
+      })
+      .catch((error)=>{
+        console.log(error);
       });
     }
     addDepartment(department){
-      if(department.id === '' || department.name === '') {
+      if(department.name === '') {
         return;
       }
       let departmentsList = this.state.departments;
-      departmentsList.push(department);
-      this.setState({
-          departments: departmentsList
+      let self = this;
+      axios.post('http://localhost:8080/departments', department)
+      .then(function (response) {
+        departmentsList.push(response.data);
+        self.setState({
+            departments: departmentsList
+        })
       })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+    componentDidMount() {
+      axios.get('http://localhost:8080/departments')
+      .then(res => {
+        this.setState({ 
+          departments : res.data 
+        });
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
     }
 }
 
