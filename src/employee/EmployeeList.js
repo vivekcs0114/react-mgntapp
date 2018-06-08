@@ -3,6 +3,7 @@ import Employee from './Employee';
 import EmployeeProfile from './EmployeeProfile';
 import AddEmployeeModal from '../AddEmployeeModal';
 import { Row, Col, Table } from 'reactstrap';
+import axios from 'axios';
 
 class EmployeeList extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class EmployeeList extends Component {
         this.state = {
             employee: {},
             employees:this.props.employees,
-            queryString: ''
+            queryString: '',
+            department: this.props.department
         }
     }
     render() {
@@ -20,7 +22,7 @@ class EmployeeList extends Component {
             <Row>
                 <Col sm="6">
                     <div className="navbar-brand">
-                        Employee List of {this.props.departmentName}
+                        Employee List of {this.props.department.name}
                     </div>
                     <div>
                         <button type="button" className="btn btn-primary btn-sm marginTwo">Total <span className="badge">{total}</span></button>
@@ -91,13 +93,19 @@ class EmployeeList extends Component {
         return true; 
     }
     getEmployee(employee) {
-        this.setState({
-            employee: employee
+        axios.get('http://localhost:8080/employees/'+employee.id)
+        .then(res => {
+            this.setState({ 
+                employee: res.data
+            });
         })
+        .catch((error)=>{
+            console.log(error);
+        });
     }
     updateEmployee(employee) {
-        let employees = this.state.employees;
-        let updatedEmployees = employees.map((emp) => {
+        let self = this;
+        let updatedEmployees = this.state.employees.map((emp) => {
             if (emp.id === employee.id) {
                 return {
                     name: employee.name,
@@ -109,21 +117,33 @@ class EmployeeList extends Component {
                 return emp;
             }
         });
-        this.setState({
-            employees:updatedEmployees,
-            employee: employee
+        axios.put('http://localhost:8080/employees/'+employee.id, employee)
+        .then(function (response) {
+            self.setState({
+                employee: response.data,
+                employees: updatedEmployees
+            })
         })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
     addEmployee(employee) {
-        if(employee.id === '' || employee.name === '') {
+        if(employee.name === '') {
             return;
         }
         let employeesList = this.state.employees;
-        employeesList.push(employee);
-        this.setState({
-            employees: employeesList
+        let self = this;
+        axios.post('http://localhost:8080/employees/departments/'+this.state.department.id, employee)
+        .then(function (response) {
+            employeesList.push(response.data);
+            self.setState({
+                employees: employeesList
+            })
         })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 }
-
 export default EmployeeList;

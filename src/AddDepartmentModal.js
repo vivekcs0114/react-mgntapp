@@ -18,8 +18,7 @@ class AddDepartmentModal extends Component {
       super();
       this.state = {
         showModal: false,
-        name: '',
-        id: ''
+        name: ''
       };
       
       this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -50,10 +49,6 @@ class AddDepartmentModal extends Component {
             </Button>
             <Form>
                 <FormGroup>
-                <Label for="id">Id:</Label>
-                <Input type="number" onChange={(event)=>this.handleIdChange(event)}  value={this.state.id} className="form-control" />
-                </FormGroup>
-                <FormGroup>
                 <Label for="name">Name:</Label>
                 <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
                 </FormGroup>
@@ -65,11 +60,6 @@ class AddDepartmentModal extends Component {
         </div>
       );
     }
-    handleIdChange(event) {
-        this.setState({
-            id: event.target.value
-        });
-    }
     handleNameChange(event) {
         this.setState({
             name: event.target.value
@@ -77,7 +67,6 @@ class AddDepartmentModal extends Component {
     }
     getInputData() {
         return {
-            id: this.state.id,
             name:this.state.name
         }
     }
