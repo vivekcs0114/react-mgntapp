@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Department from './Department';
-import EmployeeList from '../employee/EmployeeList';
 import AddDepartmentModal from '../AddDepartmentModal'
 import { Container, Row, Col, Table } from 'reactstrap';
 import axios from 'axios';
@@ -18,7 +17,7 @@ class DepartmentList extends Component {
         return (
           <Container>
             <Row>
-              <Col sm="4">
+              <Col  sm="12" md={{ size: 8, offset: 2 }}>
                 <span className="navbar-brand">
                   Department List
                 </span>
@@ -40,9 +39,6 @@ class DepartmentList extends Component {
                 </tbody>
                 </Table>
                 <AddDepartmentModal addDepartment={(department) => this.addDepartment(department)}/>
-              </Col>
-              <Col sm="8">
-                { this.isEmpty(this.state.employees) ? '' : <EmployeeList department={this.state.department} employees={this.state.employees} /> }
               </Col>
             </Row>
           </Container>

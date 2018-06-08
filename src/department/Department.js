@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 
 class Department extends Component {
     render() {
         return (
             <tr>
                 <td>
-                    <div onClick={() => this.props.getDepartmentEmployee(this.props.department)}>
+                    <Link to={`/employees/departments/${this.props.department.id}`} onClick={() => this.props.getDepartmentEmployee(this.props.department)}>
                     {this.props.department.id}
-                    </div>
+                    </Link>
                 </td>
                 <td>
                 {this.props.department.name}

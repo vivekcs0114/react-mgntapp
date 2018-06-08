@@ -1,43 +1,51 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import axios from 'axios';
 
 class EmployeeProfile extends Component {
     constructor(props){
         super(props);
         this.state = {
-            name: this.props.employee.name,
-            address: this.props.employee.address,
-            active: this.props.employee.active
+            employee:{},
+            name:'',
+            address:'',
+            active:''
         };
     }
     render() {
         return(
+            <Container>
+            <Row>
+            <Col sm="12" md={{ size: 8, offset: 2 }}>
             <Form>
                 <div className="navbar-brand">
-                    Welcome, {this.props.employee.name}
+                    Welcome, {this.state.employee.name}
                 </div>
                 <FormGroup>
                 <Label for="id">Id:</Label>
-                <p className="form-control">{this.props.employee.id}</p>
+                <p className="form-control">{this.state.employee.id}</p>
                 </FormGroup>
                 <FormGroup>
                 <Label for="name">Name:</Label>
-                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
+                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.employee.name} className="form-control" />
                 </FormGroup>
                 <FormGroup>
                 <Label for="address">Address:</Label>
-                <Input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.state.address} className="form-control" />
+                <Input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.state.employee.address} className="form-control" />
                 </FormGroup>
                 <FormGroup check>
                 <Label check>
-                    <Input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.state.active} />{' '}
+                    <Input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.state.employee.active} />{' '}
                     Active
                 </Label>
                 </FormGroup>
                 <Button onClick={(employee) => this.props.updateEmployee(this.getEmployee())} color="info" className="marginTwo">Submit</Button>
                 <Button onClick={()=>this.cancelEvent()} color="info" className="marginTwo">Cancel</Button>
             </Form>
+            </Col>
+            </Row>
+            </Container>
         )
     }
     cancelEvent() {
@@ -74,6 +82,17 @@ class EmployeeProfile extends Component {
             address:this.state.address,
             active: this.state.active
         }
+    }
+    componentDidMount() {
+        axios.get('http://localhost:8080/employees/1')
+        .then(res => {
+          this.setState({ 
+            employee : res.data 
+          });
+        })
+        .catch((error)=>{
+          console.log(error);
+        });
     }
 }
 export default EmployeeProfile;

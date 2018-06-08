@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import Employee from './Employee';
-import EmployeeProfile from './EmployeeProfile';
 import AddEmployeeModal from '../AddEmployeeModal';
-import { Row, Col, Table } from 'reactstrap';
+import { Container, Row, Col, Table } from 'reactstrap';
 import axios from 'axios';
 
 class EmployeeList extends Component {
@@ -10,19 +9,23 @@ class EmployeeList extends Component {
         super(props);
         this.state = {
             employee: {},
-            employees:this.props.employees,
+            employees:[],
             queryString: '',
-            department: this.props.department
+            department: {}
         }
+        console.log(this.props.match.params.depId);
     }
     render() {
         const total = this.getTotalEmployeeCount();
         const active = this.getActiveEmployeeCount();
         return (
+            <Container>
             <Row>
-                <Col sm="6">
+                <Col sm="12" md={{ size: 8, offset: 2 }}>
+                <span className="navbar-brand">
+                  Employee List
+                </span>
                     <div className="navbar-brand">
-                        Employee List of {this.props.department.name}
                     </div>
                     <div>
                         <button type="button" className="btn btn-primary btn-sm marginTwo">Total <span className="badge">{total}</span></button>
@@ -50,12 +53,8 @@ class EmployeeList extends Component {
                     </Table>
                     <AddEmployeeModal addEmployee={(employee) => this.addEmployee(employee)}/>
                 </Col>
-                <Col sm="6">
-                    { this.isEmpty(this.state.employee) ? '' : <EmployeeProfile 
-                    employee={this.state.employee} 
-                    updateEmployee={(employee) => this.updateEmployee(employee)}/> }
-                </Col>
             </Row>
+            </Container>
         )
     }
     getTotalEmployeeCount() {
@@ -143,6 +142,21 @@ class EmployeeList extends Component {
         })
         .catch(function (error) {
             console.log(error);
+        });
+    }
+    componentDidMount() {
+        let url = 'http://localhost:8080/employees/';
+        if(this.props.match.params.depId) {
+            url = 'http://localhost:8080/employees/departments/'+this.props.match.params.depId;
+        }
+        axios.get(url)
+        .then(res => {
+          this.setState({ 
+            employees : res.data 
+          });
+        })
+        .catch((error)=>{
+          console.log(error);
         });
     }
 }

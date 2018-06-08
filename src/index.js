@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import DepartmentList from './department/DepartmentList';
+import Header from './header/Header';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-ReactDOM.render(<DepartmentList />, document.getElementById('root'));
+ReactDOM.render(<Header />, document.getElementById('root'));
 registerServiceWorker();
