@@ -13,7 +13,6 @@ class EmployeeList extends Component {
             queryString: '',
             department: {}
         }
-        console.log(this.props.match.params.depId);
     }
     render() {
         const total = this.getTotalEmployeeCount();
@@ -133,7 +132,7 @@ class EmployeeList extends Component {
         }
         let employeesList = this.state.employees;
         let self = this;
-        axios.post('http://localhost:8080/employees/departments/'+this.state.department.id, employee)
+        axios.post('http://localhost:8080/employees/departments/'+this.props.match.params.depId, employee)
         .then(function (response) {
             employeesList.push(response.data);
             self.setState({

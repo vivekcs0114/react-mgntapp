@@ -18,7 +18,8 @@ class AddDepartmentModal extends Component {
       super();
       this.state = {
         showModal: false,
-        name: ''
+        name: '',
+        overview:''
       };
       
       this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -52,6 +53,10 @@ class AddDepartmentModal extends Component {
                 <Label for="name">Name:</Label>
                 <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
                 </FormGroup>
+                <FormGroup>
+                <Label for="overview">Overview:</Label>
+                <Input type="text" onChange={(event)=>this.handleOverviewChange(event)}  value={this.state.overview} className="form-control" />
+                </FormGroup>
                 <div className=" text-center">
                 <Button onClick={(department) => this.props.addDepartment(this.getInputData())} color="info">Submit</Button>
                 </div>
@@ -65,9 +70,15 @@ class AddDepartmentModal extends Component {
             name: event.target.value
         });
     }
+    handleOverviewChange(event) {
+      this.setState({
+        overview: event.target.value
+      });
+    }
     getInputData() {
         return {
-            name:this.state.name
+            name:this.state.name,
+            overview:this.state.overview
         }
     }
 }

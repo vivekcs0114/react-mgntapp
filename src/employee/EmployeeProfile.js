@@ -10,7 +10,7 @@ class EmployeeProfile extends Component {
             employee:{},
             name:'',
             address:'',
-            active:''
+            active:false
         };
     }
     render() {
@@ -84,7 +84,7 @@ class EmployeeProfile extends Component {
         }
     }
     componentDidMount() {
-        axios.get('http://localhost:8080/employees/1')
+        axios.get('http://localhost:8080/employees/'+this.props.match.params.empId)
         .then(res => {
           this.setState({ 
             employee : res.data 

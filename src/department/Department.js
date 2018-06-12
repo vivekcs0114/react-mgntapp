@@ -6,7 +6,7 @@ class Department extends Component {
         return (
             <tr>
                 <td>
-                    <Link to={`/employees/departments/${this.props.department.id}`} onClick={() => this.props.getDepartmentEmployee(this.props.department)}>
+                    <Link to={`/employees/departments/${this.props.department.id}/details`} onClick={() => this.props.getDepartmentEmployee(this.props.department)}>
                     {this.props.department.id}
                     </Link>
                 </td>
