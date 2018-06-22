@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import axios from 'axios';
+import { updateDepartment, fetchDepartment } from '../actions/departmentActions';
+import { connect } from 'react-redux';
 
 class DepartmentProfile extends Component {
     constructor(props){
@@ -16,24 +17,26 @@ class DepartmentProfile extends Component {
             <Container>
             <Row>
             <Col sm="12" md={{ size: 8, offset: 2 }}>
+            {this.props.department ? 
             <Form>
                 <div className="navbar-brand">
-                    Welcome, {this.state.department.name}
+                    Welcome, { this.props.department.name }
                 </div>
                 <FormGroup>
                 <Label for="id">Id:</Label>
-                <p className="form-control">{this.state.department.id}</p>
+                <p className="form-control">{this.props.department.id}</p>
                 </FormGroup>
                 <FormGroup>
                 <Label for="name">Name:</Label>
-                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.department.name} className="form-control" />
+                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.props.department.name} className="form-control" />
                 </FormGroup>
                 <FormGroup>
-                <Label for="address">Overview:</Label>
-                <Input type="text" onChange={(event)=>this.handleOverviewChange(event)}  value={this.state.department.overview} className="form-control" />
+                <Label for="overview">Overview:</Label>
+                <Input type="text" onChange={(event)=>this.handleOverviewChange(event)}  value={this.props.department.overview} className="form-control" />
                 </FormGroup>
-                <Button onClick={(department) => this.props.updateDepartment(this.getDepartment())} color="info" className="marginTwo">Update</Button>
+                <Button onClick={(department) => this.props.dispatch(updateDepartment(this.getDepartment()))} color="info" className="marginTwo">Update</Button>
             </Form>
+            : null}
             </Col>
             </Row>
             </Container>
@@ -56,16 +59,16 @@ class DepartmentProfile extends Component {
             overview:this.state.address
         }
     }
-    componentDidMount() {
-        axios.get('http://localhost:8080/departments/'+this.props.match.params.depId)
-        .then(res => {
-          this.setState({ 
-            department : res.data 
-          });
-        })
-        .catch((error)=>{
-          console.log(error);
-        });
+    componentWillMount() {
+        let id = this.props.match.params.depId;
+        this.props.dispatch(fetchDepartment(id));
     }
 }
-export default DepartmentProfile;
+
+function mapStateToProps(state){
+    return state = {
+      department:state.department.department
+    };
+}
+  
+export default connect(mapStateToProps)(DepartmentProfile);

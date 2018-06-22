@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import ReactModal from 'react-modal';
 import Modal from 'react-modal';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { connect } from 'react-redux';
+import { addEmployee } from './actions/employeeActions'; 
 
 const customStyles = {
     content : {
@@ -65,7 +67,7 @@ class AddEmployeeModal extends Component {
                 </Label>
                 </FormGroup>
                 <div className=" text-center">
-                <Button onClick={(employee) => this.props.addEmployee(this.getInputData())} color="info">Submit</Button>
+                <Button onClick={(employee) => this.props.dispatch(addEmployee(this.getInputData()))} color="info">Submit</Button>
                 </div>
             </Form>
           </ReactModal>
@@ -96,4 +98,10 @@ class AddEmployeeModal extends Component {
     }
 }
 
-export default AddEmployeeModal;
+function mapStateToProps(state){
+    return state = {
+      employee:state.employee.employee
+    };
+}
+
+export default connect(mapStateToProps)( AddEmployeeModal);

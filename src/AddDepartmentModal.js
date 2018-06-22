@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import ReactModal from 'react-modal';
 import Modal from 'react-modal';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { connect } from 'react-redux';
+import { addDepartment } from './actions/departmentActions';
 
 const customStyles = {
     content : {
@@ -58,7 +60,7 @@ class AddDepartmentModal extends Component {
                 <Input type="text" onChange={(event)=>this.handleOverviewChange(event)}  value={this.state.overview} className="form-control" />
                 </FormGroup>
                 <div className=" text-center">
-                <Button onClick={(department) => this.props.addDepartment(this.getInputData())} color="info">Submit</Button>
+                <Button onClick={(department) => this.props.dispatch(addDepartment(this.getInputData()))} color="info">Submit</Button>
                 </div>
             </Form>
           </ReactModal>
@@ -83,4 +85,10 @@ class AddDepartmentModal extends Component {
     }
 }
 
-export default AddDepartmentModal;
+function mapStateToProps(state){
+  return state = {
+    department:state.department.department
+  };
+}
+
+export default connect(mapStateToProps)(AddDepartmentModal);

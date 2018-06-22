@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { fetchEmployee, updateEmployee, setName, setAddress, setStatus } from '../actions/employeeActions';
 
 class EmployeeProfile extends Component {
     constructor(props){
@@ -18,62 +18,49 @@ class EmployeeProfile extends Component {
             <Container>
             <Row>
             <Col sm="12" md={{ size: 8, offset: 2 }}>
+            { this.props.employee ?
             <Form>
                 <div className="navbar-brand">
-                    Welcome, {this.state.employee.name}
+                    Welcome, {this.props.employee.name}
                 </div>
                 <FormGroup>
                 <Label for="id">Id:</Label>
-                <p className="form-control">{this.state.employee.id}</p>
+                <p className="form-control">{this.props.employee.id}</p>
                 </FormGroup>
                 <FormGroup>
                 <Label for="name">Name:</Label>
-                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.employee.name} className="form-control" />
+                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.props.employee.name} className="form-control" />
                 </FormGroup>
                 <FormGroup>
                 <Label for="address">Address:</Label>
-                <Input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.state.employee.address} className="form-control" />
+                <Input type="text" onChange={(event)=>this.handleAddressChange(event)}  value={this.props.employee.address} className="form-control" />
                 </FormGroup>
                 <FormGroup check>
                 <Label check>
-                    <Input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.state.employee.active} />{' '}
+                    <Input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.props.employee.active} />{' '}
                     Active
                 </Label>
                 </FormGroup>
-                <Button onClick={(employee) => this.props.updateEmployee(this.getEmployee())} color="info" className="marginTwo">Submit</Button>
+                <Button onClick={(employee) => this.props.dispatch(updateEmployee(this.getEmployee()))} color="info" className="marginTwo">Submit</Button>
                 <Button onClick={()=>this.cancelEvent()} color="info" className="marginTwo">Cancel</Button>
             </Form>
+            : null }
             </Col>
             </Row>
             </Container>
         )
     }
     cancelEvent() {
-        let mountNode = ReactDOM.findDOMNode(this.refs.wassup);
-        let unmount = ReactDOM.unmountComponentAtNode(mountNode);
-        console.log(unmount);
-    }
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            name: nextProps.employee.name,
-            address: nextProps.employee.address,
-            active: nextProps.employee.active,            
-        })
+        console.log("cancel");
     }
     handleNameChange(event) {
-        this.setState({
-            name: event.target.value
-        });
+        this.props.dispatch(setName(event.target.value));
     }
     handleAddressChange(event) {
-        this.setState({
-            address: event.target.value
-        });
+        this.props.dispatch(setAddress(event.target.value));
     }
-    handleToggleActive() {
-        this.setState({
-            active: !this.state.active
-        });
+    handleToggleActive(event) {
+        this.props.dispatch(setStatus(event.target.value));
     }
     getEmployee() {
         return {
@@ -83,16 +70,15 @@ class EmployeeProfile extends Component {
             active: this.state.active
         }
     }
-    componentDidMount() {
-        axios.get('http://localhost:8080/employees/'+this.props.match.params.empId)
-        .then(res => {
-          this.setState({ 
-            employee : res.data 
-          });
-        })
-        .catch((error)=>{
-          console.log(error);
-        });
+    componentWillMount() {
+        let id = this.props.match.params.empId;
+        this.props.dispatch(fetchEmployee(id));
     }
 }
-export default EmployeeProfile;
+function mapStateToProps(state){
+    return state = {
+      employee:state.employee.employee
+    };
+}
+  
+export default connect(mapStateToProps)(EmployeeProfile);
