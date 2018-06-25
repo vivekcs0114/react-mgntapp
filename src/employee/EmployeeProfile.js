@@ -4,15 +4,6 @@ import { connect } from 'react-redux';
 import { fetchEmployee, updateEmployee, setName, setAddress, setStatus } from '../actions/employeeActions';
 
 class EmployeeProfile extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            employee:{},
-            name:'',
-            address:'',
-            active:false
-        };
-    }
     render() {
         return(
             <Container>
@@ -37,7 +28,7 @@ class EmployeeProfile extends Component {
                 </FormGroup>
                 <FormGroup check>
                 <Label check>
-                    <Input type="checkbox" onChange={()=>this.handleToggleActive()}  checked={this.props.employee.active} />{' '}
+                    <Input type="checkbox" onChange={(event)=>this.handleToggleActive(event)}  checked={this.props.employee.active} />{' '}
                     Active
                 </Label>
                 </FormGroup>
@@ -65,9 +56,9 @@ class EmployeeProfile extends Component {
     getEmployee() {
         return {
             id: this.props.employee.id,
-            name:this.state.name,
-            address:this.state.address,
-            active: this.state.active
+            name:this.props.employee.name,
+            address:this.props.employee.address,
+            active: this.props.employee.active
         }
     }
     componentWillMount() {

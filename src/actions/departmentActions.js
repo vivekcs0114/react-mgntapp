@@ -47,3 +47,15 @@ export function updateDepartment(department) {
         })
     }
 }
+
+export function setName(name) {
+    return function(dispatch) {
+        dispatch({type: "SET_NAME", payload:name})
+    }
+}
+
+export function setOverview(overview) {
+    return function(dispatch) {
+        dispatch({type: "SET_OVERVIEW", payload:overview})
+    }
+}

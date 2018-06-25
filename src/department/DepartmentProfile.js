@@ -1,17 +1,9 @@
 import React, {Component} from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { updateDepartment, fetchDepartment } from '../actions/departmentActions';
+import { updateDepartment, fetchDepartment, setName, setOverview } from '../actions/departmentActions';
 import { connect } from 'react-redux';
 
 class DepartmentProfile extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            department:{},
-            name:'',
-            overview:''
-        };
-    }
     render() {
         return(
             <Container>
@@ -43,20 +35,16 @@ class DepartmentProfile extends Component {
         )
     }
     handleNameChange(event) {
-        this.setState({
-            name: event.target.value
-        });
+        this.props.dispatch(setName(event.target.value));
     }
     handleOverviewChange(event) {
-        this.setState({
-            overview: event.target.value
-        });
+        this.props.dispatch(setOverview(event.target.value));
     }
     getDepartment() {
         return {
             id: this.props.department.id,
-            name:this.state.name,
-            overview:this.state.address
+            name:this.props.department.name,
+            overview:this.props.department.address
         }
     }
     componentWillMount() {

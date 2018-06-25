@@ -66,6 +66,20 @@ export default function reducer(state=[], action) {
                 error:action.payload
             }
         }
+        case "SET_NAME" : {
+            return {
+                ...state,
+                fetching:false,
+                department:action.payload
+            }
+        }
+        case "SET_OVERVIEW" : {
+            return {
+                ...state,
+                fetching:false,
+                error:action.payload
+            }
+        }
         default:
             return state;
     }
