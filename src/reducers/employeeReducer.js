@@ -66,6 +66,18 @@ export default function reducer(state=[], action) {
                 employee:action.payload
             }
         }
+        case "ADD_DEP_EMPLOYEE_REJECTED" : {
+            return {
+                ...state,
+                error:action.payload
+            }
+        }
+        case "ADD_DEP_EMPLOYEE_FULFILLED" : {
+            return {
+                ...state,
+                employee:action.payload
+            }
+        }
         case "UPDATE_EMPLOYEE_FULFILLED" : {
             return {
                 ...state,
@@ -81,22 +93,15 @@ export default function reducer(state=[], action) {
                 error:action.payload
             }
         }
-        case "SET_NAME" : {
+        case "DELETE_EMPLOYEE_SUCCESS" : {
             return {
-                ...state,
-                employee:action.payload
+                ...state
             }
         }
-        case "SET_ADDRESS" : {
+        case "DELETE_EMPLOYEE_FAILED" : {
             return {
                 ...state,
-                employee:action.payload
-            }
-        }
-        case "SET_STATUS" : {
-            return {
-                ...state,
-                employee:action.payload
+                error:action.payload
             }
         }
         default:

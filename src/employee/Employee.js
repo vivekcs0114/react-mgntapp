@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import DeleteConfirmationModal from '../DeleteConfirmationModal';
+
 class Employee extends Component {
     render() {
         return (
@@ -11,6 +13,9 @@ class Employee extends Component {
                 </td>
                 <td>
                     {this.props.employee.name}
+                </td>
+                <td>
+                    <DeleteConfirmationModal target="employee" depId={this.props.employee.id}/>
                 </td>
             </tr>
         )

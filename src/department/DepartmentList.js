@@ -4,6 +4,7 @@ import AddDepartmentModal from '../AddDepartmentModal'
 import { Container, Row, Col, Table } from 'reactstrap';
 import { fetchDepartmentList } from '../actions/departmentActions';
 import { connect } from 'react-redux';
+import PaginationRow from '../pagination/PaginationRow';
 
 class DepartmentList extends Component {
     render() {
@@ -19,6 +20,7 @@ class DepartmentList extends Component {
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,7 +33,16 @@ class DepartmentList extends Component {
                 } 
                 </tbody>
                 </Table>
-                <AddDepartmentModal />
+                <Row>
+                  <Col sm="6">
+                    <AddDepartmentModal />
+                  </Col>
+                  <Col sm="6">
+                    {this.props.department ? 
+                    <PaginationRow total={this.props.department.length} />
+                    : null }
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </Container>

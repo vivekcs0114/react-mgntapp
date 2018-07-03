@@ -60,7 +60,7 @@ class AddDepartmentModal extends Component {
                 <Input type="text" onChange={(event)=>this.handleOverviewChange(event)}  value={this.state.overview} className="form-control" />
                 </FormGroup>
                 <div className=" text-center">
-                <Button onClick={(department) => this.props.dispatch(addDepartment(this.getInputData()))} color="info">Submit</Button>
+                <Button onClick={(department) => this.addDepartment(this.getInputData())} color="info">Submit</Button>
                 </div>
             </Form>
           </ReactModal>
@@ -83,9 +83,16 @@ class AddDepartmentModal extends Component {
             overview:this.state.overview
         }
     }
+
+    addDepartment(department) {
+      this.props.dispatch(addDepartment(department))
+      this.setState({
+        showModal:false
+      })
+    }
 }
 
-function mapStateToProps(state){
+const mapStateToProps = (state) => {
   return state = {
     department:state.department.department
   };

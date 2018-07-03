@@ -21,7 +21,7 @@ export function setUserName(name) {
 
 export function fetchUserApi() {
     return function(dispatch) {
-        axios.get('http://localhost:8080/employees/1')
+        axios.get('/employees/1')
         .then((response) => {
             dispatch({type: "FETCH_USER_FULFILLED", payload:response.data})
         })

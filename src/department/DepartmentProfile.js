@@ -1,9 +1,17 @@
 import React, {Component} from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { updateDepartment, fetchDepartment, setName, setOverview } from '../actions/departmentActions';
+import { updateDepartment, fetchDepartment } from '../actions/departmentActions';
 import { connect } from 'react-redux';
 
 class DepartmentProfile extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            department:{},
+            name:'',
+            overview:''
+        };
+    }
     render() {
         return(
             <Container>
@@ -12,19 +20,19 @@ class DepartmentProfile extends Component {
             {this.props.department ? 
             <Form>
                 <div className="navbar-brand">
-                    Welcome, { this.props.department.name }
+                    Welcome, { this.state.department.name }
                 </div>
                 <FormGroup>
                 <Label for="id">Id:</Label>
-                <p className="form-control">{this.props.department.id}</p>
+                <p className="form-control">{this.state.department.id}</p>
                 </FormGroup>
                 <FormGroup>
                 <Label for="name">Name:</Label>
-                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.props.department.name} className="form-control" />
+                <Input type="text" onChange={(event)=>this.handleNameChange(event)}  value={this.state.name} className="form-control" />
                 </FormGroup>
                 <FormGroup>
                 <Label for="overview">Overview:</Label>
-                <Input type="text" onChange={(event)=>this.handleOverviewChange(event)}  value={this.props.department.overview} className="form-control" />
+                <Input type="text" onChange={(event)=>this.handleOverviewChange(event)}  value={this.state.overview} className="form-control" />
                 </FormGroup>
                 <Button onClick={(department) => this.props.dispatch(updateDepartment(this.getDepartment()))} color="info" className="marginTwo">Update</Button>
             </Form>
@@ -35,21 +43,34 @@ class DepartmentProfile extends Component {
         )
     }
     handleNameChange(event) {
-        this.props.dispatch(setName(event.target.value));
+        this.setState({
+            name: event.target.value
+        });
     }
     handleOverviewChange(event) {
-        this.props.dispatch(setOverview(event.target.value));
+        this.setState({
+            overview: event.target.value
+        });
     }
     getDepartment() {
         return {
-            id: this.props.department.id,
-            name:this.props.department.name,
-            overview:this.props.department.address
+            id: this.state.department.id,
+            name:this.state.name,
+            overview:this.state.overview
         }
     }
     componentWillMount() {
         let id = this.props.match.params.depId;
         this.props.dispatch(fetchDepartment(id));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const department = nextProps.department;
+        this.setState({
+            department:department,
+            name:department.name,
+            overview:department.overview
+        })
     }
 }
 

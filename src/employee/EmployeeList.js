@@ -4,6 +4,7 @@ import AddEmployeeModal from '../AddEmployeeModal';
 import { Container, Row, Col, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchEmployeeList, fetchDepartmentEmployees } from '../actions/employeeActions';
+import PaginationRow from '../pagination/PaginationRow';
 
 class EmployeeList extends Component {
     constructor(props) {
@@ -43,6 +44,7 @@ class EmployeeList extends Component {
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -56,7 +58,16 @@ class EmployeeList extends Component {
                     }
                     </tbody>
                     </Table>
-                    <AddEmployeeModal />
+                    <Row>
+                      <Col sm="6">
+                        <AddEmployeeModal depId={this.props.match.params.depId} />
+                      </Col>
+                      <Col sm="6">
+                        { this.props.employee ? 
+                        <PaginationRow total={this.props.employee.length} />
+                        : null}
+                      </Col>
+                    </Row>
                 </Col>
             </Row>
             </Container>

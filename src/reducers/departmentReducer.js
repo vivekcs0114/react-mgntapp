@@ -66,17 +66,14 @@ export default function reducer(state=[], action) {
                 error:action.payload
             }
         }
-        case "SET_NAME" : {
+        case "DELETE_DEPARTMENT_SUCCESS" : {
             return {
-                ...state,
-                fetching:false,
-                department:action.payload
+                ...state
             }
         }
-        case "SET_OVERVIEW" : {
+        case "DELETE_DEPARTMENT_FAILED" : {
             return {
                 ...state,
-                fetching:false,
                 error:action.payload
             }
         }

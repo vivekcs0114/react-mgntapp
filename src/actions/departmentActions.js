@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export function fetchDepartmentList() {
     return function(dispatch) {
-        axios.get('http://localhost:8080/departments')
+        axios.get('/departments')
         .then((response) => {
             dispatch({type: "FETCH_DEPARTMENTLIST_FULFILLED", payload:response.data})
         })
@@ -14,7 +14,7 @@ export function fetchDepartmentList() {
 
 export function fetchDepartment(id) {
     return function(dispatch) {
-        axios.get('http://localhost:8080/departments/'+id)
+        axios.get('/departments/'+id)
         .then((response) => {
             dispatch({type: "FETCH_DEPARTMENT_FULFILLED", payload:response.data})
         })
@@ -26,7 +26,7 @@ export function fetchDepartment(id) {
 
 export function addDepartment(department) {
     return function(dispatch) {
-        axios.post('http://localhost:8080/departments', department)
+        axios.post('/departments', department)
         .then((response) => {
             dispatch({type: "ADD_DEPARTMENT_FULFILLED", payload:response.data})
         })
@@ -38,7 +38,7 @@ export function addDepartment(department) {
 
 export function updateDepartment(department) {
     return function(dispatch) {
-        axios.put('http://localhost:8080/departments/'+department.id, department)
+        axios.put('/departments/'+department.id, department)
         .then((response) => {
             dispatch({type: "UPDATE_DEPARTMENT_FULFILLED", payload:response.data})
         })
@@ -48,14 +48,14 @@ export function updateDepartment(department) {
     }
 }
 
-export function setName(name) {
+export function deleteDepartment(depId) {
     return function(dispatch) {
-        dispatch({type: "SET_NAME", payload:name})
-    }
-}
-
-export function setOverview(overview) {
-    return function(dispatch) {
-        dispatch({type: "SET_OVERVIEW", payload:overview})
+        axios.delete('/departments/'+depId)
+        .then((response) => {
+            dispatch({type: "DELETE_DEPARTMENT_SUCCESS", payload:response.data})
+        })
+        .catch((error) => {
+            dispatch({type:"DELETE_DEPARTMENT_FAILED", payload:error})
+        })
     }
 }
