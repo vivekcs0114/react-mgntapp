@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import ReactModal from 'react-modal';
 import Modal from 'react-modal';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { connect } from 'react-redux';
+import { addEmployee, addDepartmentEmployees } from './actions/employeeActions'; 
 
 const customStyles = {
     content : {
@@ -14,8 +16,8 @@ const customStyles = {
     }
 };
 class AddEmployeeModal extends Component {
-    constructor () {
-      super();
+    constructor (props) {
+      super(props);
       this.state = {
         showModal: false,
         name: '',
@@ -65,7 +67,7 @@ class AddEmployeeModal extends Component {
                 </Label>
                 </FormGroup>
                 <div className=" text-center">
-                <Button onClick={(employee) => this.props.addEmployee(this.getInputData())} color="info">Submit</Button>
+                <Button onClick={(employee) => this.addEmployee(this.getInputData())} color="info">Submit</Button>
                 </div>
             </Form>
           </ReactModal>
@@ -94,6 +96,22 @@ class AddEmployeeModal extends Component {
             active: this.state.active
         }
     }
+    addEmployee(employee) {
+        if(this.props.depId) {
+            this.props.dispatch(addDepartmentEmployees(this.props.depId, employee));
+        } else {
+            this.props.dispatch(addEmployee(employee));
+        }
+        this.setState({
+            showModal:false
+        })
+    }
 }
 
-export default AddEmployeeModal;
+function mapStateToProps(state){
+    return state = {
+      employee:state.employee.employee
+    };
+}
+
+export default connect(mapStateToProps)( AddEmployeeModal);

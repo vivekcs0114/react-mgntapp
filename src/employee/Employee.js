@@ -1,16 +1,21 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import DeleteConfirmationModal from '../DeleteConfirmationModal';
 
 class Employee extends Component {
     render() {
         return (
             <tr>
                 <td>
-                    <div onClick={() => this.props.getEmployee(this.props.employee)}>
+                    <Link to={`/employees/${this.props.employee.id}`} onClick={() => this.props.getEmployee(this.props.employee)}>
                         {this.props.employee.id}
-                    </div>
+                    </Link>
                 </td>
                 <td>
                     {this.props.employee.name}
+                </td>
+                <td>
+                    <DeleteConfirmationModal target="employee" depId={this.props.employee.id}/>
                 </td>
             </tr>
         )

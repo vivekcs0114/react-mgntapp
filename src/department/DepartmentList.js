@@ -1,24 +1,17 @@
 import React, {Component} from 'react';
 import Department from './Department';
-import EmployeeList from '../employee/EmployeeList';
 import AddDepartmentModal from '../AddDepartmentModal'
 import { Container, Row, Col, Table } from 'reactstrap';
-import axios from 'axios';
+import { fetchDepartmentList } from '../actions/departmentActions';
+import { connect } from 'react-redux';
+import PaginationRow from '../pagination/PaginationRow';
 
 class DepartmentList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            departments:[],
-            employees:[],
-            department:{}
-        }
-    }
     render() {
         return (
           <Container>
             <Row>
-              <Col sm="4">
+              <Col  sm="12" md={{ size: 8, offset: 2 }}>
                 <span className="navbar-brand">
                   Department List
                 </span>
@@ -27,73 +20,43 @@ class DepartmentList extends Component {
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {
-                  this.state.departments.map(department => 
+                  this.props && this.props.department ?
+                  this.props.department.map(dep => 
                   <Department 
-                  key={department.id}
-                  department={department} 
-                  getDepartmentEmployee={(department) => this.getDepartmentEmployee(department)}/>)
-                }
+                  key={dep.id}
+                  department={dep} />) : null
+                } 
                 </tbody>
                 </Table>
-                <AddDepartmentModal addDepartment={(department) => this.addDepartment(department)}/>
-              </Col>
-              <Col sm="8">
-                { this.isEmpty(this.state.employees) ? '' : <EmployeeList department={this.state.department} employees={this.state.employees} /> }
+                <Row>
+                  <Col sm="6">
+                    <AddDepartmentModal />
+                  </Col>
+                  <Col sm="6">
+                    {this.props.department ? 
+                    <PaginationRow total={this.props.department.length} />
+                    : null }
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </Container>
         )
     }
-    isEmpty(obj) { 
-      for ( var prop in obj ) { 
-        return false; 
-      } 
-      return true; 
-    }
-    getDepartmentEmployee(department) {
-      axios.get('http://localhost:8080/employees/departments/'+department.id)
-      .then(res => {
-        this.setState({ 
-          employees: res.data,
-          department:department
-        });
-      })
-      .catch((error)=>{
-        console.log(error);
-      });
-    }
-    addDepartment(department){
-      if(department.name === '') {
-        return;
-      }
-      let departmentsList = this.state.departments;
-      let self = this;
-      axios.post('http://localhost:8080/departments', department)
-      .then(function (response) {
-        departmentsList.push(response.data);
-        self.setState({
-            departments: departmentsList
-        })
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }
-    componentDidMount() {
-      axios.get('http://localhost:8080/departments')
-      .then(res => {
-        this.setState({ 
-          departments : res.data 
-        });
-      })
-      .catch((error)=>{
-        console.log(error);
-      });
+    componentWillMount() {
+      this.props.dispatch(fetchDepartmentList());
     }
 }
 
-export default DepartmentList;
+function mapStateToProps(state){
+  return state = {
+      department: state.department.department
+  };
+}
+
+export default connect(mapStateToProps)(DepartmentList);
